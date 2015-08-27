@@ -235,3 +235,71 @@ Node invertTree(Node root) {
 
 	return root;
 }
+
+// ----------------------------------------------------------------
+
+// Search in Rotated Sorted Array
+// Supposed a sorted array is rotated at some pivot unknown to you
+// beforehand (ex: [0, 1, 2, 4, 5, 6, 7] might become
+// [4, 5, 6, 7, 0, 1, 2]). You are given a target value to search.
+// If found in the array return its index, otherwise return -1.
+// Assume no duplicates.
+
+// Attempt 1:
+// This works, but also know that I didn't need to call
+// binarySearch; I could have just kept with the rotated version.
+int search(int[] nums, int target) {
+    return rotatedBinarySearch(nums, target, 0, nums.length - 1);
+}
+
+int rotatedBinarySearch(int[] nums, int target, int leftIndex, int rightIndex) {
+    int middleIndex = (leftIndex + rightIndex) / 2;
+       
+    if (leftIndex > rightIndex) {
+        return -1;
+    }
+        
+    if (nums[middleIndex] == target) {
+        return middleIndex;
+    }
+        
+    if (nums[leftIndex] <= nums[middleIndex]) {
+        // left half of array is sorted
+            
+        if (target >= nums[leftIndex] && target < nums[middleIndex]) {
+            // target is located in left half of array
+            // binary search on left half of array
+            return binarySearch(nums, target, leftIndex, middleIndex - 1);
+        } else {
+            // target is located in right half of array
+            return rotatedBinarySearch(nums, target, middleIndex + 1, rightIndex);
+        }
+    } else {
+        // right half of array is sorted
+            
+        if (target > nums[middleIndex] && target <= nums[rightIndex]) {
+            // target is located in right half of array
+            // binary search on right half of array
+            return binarySearch(nums, target, middleIndex + 1, rightIndex);
+        } else {
+            // target is located in left half of array
+            return rotatedBinarySearch(nums, target, leftIndex, middleIndex - 1);
+        }
+    }
+}
+
+int binarySearch(int[] nums, int target, int leftIndex, int rightIndex) {
+    if (leftIndex > rightIndex) {
+        return -1;
+    }
+        
+    int middleIndex = (leftIndex + rightIndex) / 2;
+        
+    if (nums[middleIndex] == target) {
+        return middleIndex;
+    } else if (target < nums[middleIndex]) {
+        return binarySearch(nums, target, leftIndex, middleIndex - 1);
+    } else {
+        return binarySearch(nums, target, middleIndex + 1, rightIndex);
+    }
+}
