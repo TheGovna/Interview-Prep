@@ -40,6 +40,8 @@ int maxSubarray(int[] nums) {
 	return maxSoFar;
 }
 
+// ----------------------------------------------------------------
+
 // Merge Intervals
 // Given a collection of intervals, merge all overlapping intervals.
 // Input: [1,3],[2,6],[8,10],[15,18]
@@ -105,4 +107,58 @@ List<Interval> merge(List<Interval> intervals) {
 	// Add the last merged intervals to the solution
 	mergedIntervals.add(new Interval(mergedStart, mergedEnd));
 	return mergedIntervals;
+}
+
+// ----------------------------------------------------------------
+
+// Two Sum
+// Given an array of integers, find two numbers such that they add
+// up to a specified target number. Return indices of the two numbers
+// such that they add up to the target, where index1 < index2.
+// index1 and index2 are not zero-based.
+// Source: https://leetcode.com/problems/two-sum/
+
+// Attempt 1 (Works, but there's a faster way):
+int[] twoSum(int[] nums, int target) {
+	// key = nums[i]
+	// value = target = nums[i]
+	HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+
+	for(int i = 0; i < nums.length; i++) {
+		if (map.values.contains(nums[i])) {
+			// return this pair
+			int[] result = new int[2];
+
+			for (int j = 0; j < nums.length; j++) {
+				if (nums[j] + nums[i] == target) {
+					result[0] = j + 1;
+					result[1] = i + 1;
+					Arrays.sort(result);
+					return result;
+				}
+			}
+		}
+
+		map.put(nums[i], target - nums[i]);
+	}
+
+	return null;
+}
+
+// Solution:
+int[] twoSum(int[] nums, int target) {
+	// key = nums[i]
+	// value = i
+	HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+
+	for(int i = 0; i < nums.length; i++) {
+		int x = nums[i];
+		if (map.containsKey(target - x)) {
+			return new int[] {map.get(target - x) + 1, i + 1};
+		}
+
+		map.put(x, i);
+	}
+
+	return null;
 }
