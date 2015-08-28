@@ -162,3 +162,60 @@ int[] twoSum(int[] nums, int target) {
 
 	return null;
 }
+
+// ----------------------------------------------------------------
+
+// Find the first unique character in a string
+// Source: Aaron (Palantir coding challenge)
+
+// Attempt 1 (Probabaly works, but there are cleaner ways):
+char getFirstUnique(String str) {
+	HashMap<Character, boolean> isUniqueMap = new HashMap<Character, boolean>();
+	HashMap<Character, Integer> firstOccurrenceMap = new HashMap<char, Integer>();
+
+	for(int i = 0; i < str.length; i++) {
+		if (!isUniqueMap.containsKey(str.charAt(i))) {
+			isUniqueMap.put(str.charAt(i), true);
+			firstOccurrenceMap.put(str.charAt(i), i);
+		} else {
+			isUniqueMap.put(str.charAt(i), false);
+		}
+	}
+
+	int indexOfFirstOccurrence = firstOccurrenceMap.keySet().size() - 1;
+
+	char firstChar;
+	for(char c : isUniqueMap.keySet()) {
+		if (isUniqueMap.get(c) && firstOccurrenceMap.get(c) < indexOfFirstOccurrence) {
+			indexOfFirstOccurrence = firstOccurrenceMap.get(c);
+			firstChar = c;
+		}
+	}
+
+	return firstChar;
+}
+
+// Solution:
+char getFirstUnique(String str) {
+	HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+
+	for(int i = 0; i < str.length; i++) {
+		char c = word.charAt(i);
+
+		if (map.containsKey(c)) {
+			map.put(c, map.get(c) + 1);
+		} else {
+			map.put(c, 1);
+		}
+	}
+
+	// HashMap doesn't preserve order, so go through string again
+	for(int i = 0; i < str.length; i++) {
+		char c = str.charAt(i);
+		if(map.get(c) == 1) {
+			return c;
+		}
+	}
+
+	return null;
+}
