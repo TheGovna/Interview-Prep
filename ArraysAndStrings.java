@@ -219,3 +219,106 @@ char getFirstUnique(String str) {
 
 	return null;
 }
+
+// ----------------------------------------------------------------
+
+// Valid Palindrome
+// Given a string, determine if it is a palindrome, considering only
+// alphanumeric chars and ignoring cases.
+// Input: "A man, a plan, a canal: Panama"
+// Output: true
+// Input: "race a car"
+// Output: false
+// Source: https://leetcode.com/problems/valid-palindrome/
+
+// Attempt 1 (works, but there's an O(1) space solution):
+boolean isPalindrome(String s) {
+	if(s.isEmpty()) {
+		return true;
+	}
+
+	StringBuilder sb = new StringBuilder();
+
+	for(Character c : s.toCharArray()) {
+		if(Character.isLetterOrDigit(c)) {
+			sb.append(c);
+		}
+	}
+
+	String lcString = sb.toString().toLowerCase();
+
+	for(int i = 0; i < lcString.length() / 2; i++) {
+		if(lcString.charAt(i) != lcString.charAt((lcString.length() -1 - i))) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+// Solution:
+boolean isPalindrome(String s) {
+	int i = 0;
+	int j = s.length() - 1;
+
+	while(i < j) {
+		while((i < j) && !Character.isLetterOrDigit(s.charAt(i))) {
+			i++;
+		}
+
+		while((i < j) && !Character.isLetterOrDigit(s.charAt(j))) {
+			j--;
+		}
+
+		if(Character.toLowerCase(s.charAt(i)) != Character.toLowerCase(s.charAt(j))) {
+			return false;
+		}
+
+		i++;
+		j--;
+	}
+
+	return true;
+}
+
+// ----------------------------------------------------------------
+
+// Reverse Words in a String
+// Given an input string, reverse the string word by word
+// Input: "the sky is blue"
+// Output: "blue is sky the"
+// Source: https://leetcode.com/problems/reverse-words-in-a-string/
+
+// Attempt 1:
+// works fine, requires knowledge of REGEX
+String reverseWords(String s) {
+	String str = s.replaceAll("\\s+", " ");
+	StringBuilder sb = new StringBuilder();
+	String[] sArray = str.split(" ");
+
+	for(int i = sArray.length - 1; i >= 0; i--) {
+		sb.append(sArray[i] + " ");
+	}
+
+	return sb.toString().trim();
+}
+
+// Solution:
+// Doesn't require regex knowledge
+String reverseWords(String s) {
+	StringBuilder sb = new StringBuilder();
+	int j = s.length();
+
+	for(int i = s.length() - 1; i >= 0; i--) {
+		if (s.charAt(i) == ' ') {
+			j = i;
+		} else if (i == 0 || s.charAt(i - 1) == ' ') {
+			if (sb.length() != 0) {
+				sb.append(' ');
+			}
+			sb.append(s.substring(i, j));
+		}
+	}
+
+	return sb.toString();
+}
