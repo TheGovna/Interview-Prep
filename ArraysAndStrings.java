@@ -322,3 +322,60 @@ String reverseWords(String s) {
 
 	return sb.toString();
 }
+
+// ----------------------------------------------------------------
+
+// Longest Substring Without Repeating Characters
+// Given a string, find the length of the longest substring without 
+// repeating characters. For example, the longest substring without 
+// repeating letters for "abcabcbb" is "abc", which the length is 3. 
+// For "bbbbb" the longest substring is "b", with the length of 1.
+// Source: https://leetcode.com/problems/longest-substring-without-repeating-characters/
+
+// Attempt 1:
+// Works, but takes O(n) space
+int lengthOfLongestSubstring(String s) {
+	if (s.length() < 2) {
+		return s.length();
+	}
+
+	HashMap<Character, Integer> map = new HashMap();
+	int maxLength = 0;
+	map.put(s.charAt(0), 0);
+
+	int i = 0;
+	for (int j = 1; j < s.length(); j++) {
+		if (map.containsKey(s.charAt(j)) && (map.get(s.charAt(j)) >= i)) {
+			maxLength = Math.max(j - i, maxLength);
+			i = map.get(s.charAt(j)) + 1;
+			map.put(s.charAt(j), j);
+		} else {
+			map.put(s.charAt(j), j);
+
+			if (j == s.length() - 1) {
+				maxLength = Math.max(j - i + 1, maxLength);
+			}
+		}
+	}
+
+	return maxLength;
+}
+
+// Solution:
+// Similar logic as above, but O(1) space
+int lengthOfLongestSubstring(String s) {
+	int[] charMap = new int[256];
+	Arrays.fill(charMap, -1);
+	int i = 0; maxLength = 0;
+
+	for (int j = 0; j < s.length(); j++) {
+		if (charMap[s.charAt(j) >= i]) {
+			i = charMap[s.charAt(j)] + 1;
+		}
+
+		charMap[s.charAt(j)] = j;
+		maxLength = Math.max(j - i + 1, maxLength);
+	}
+
+	return maxLength;
+}
