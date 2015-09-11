@@ -303,3 +303,130 @@ int binarySearch(int[] nums, int target, int leftIndex, int rightIndex) {
         return binarySearch(nums, target, middleIndex + 1, rightIndex);
     }
 }
+
+// ----------------------------------------------------------------
+
+// Maximum Depth of Binary Tree
+// Given a binary tree, find its maximum depth.
+// The maximum depth is the number of nodes along the longest path 
+// from the root node down to the farthest leaf node.
+// Source: https://leetcode.com/problems/maximum-depth-of-binary-tree/
+
+// Attempt 1:
+// Works
+int maxDepth(Node root) {
+	if (root == null) {
+		return 0;
+	}
+
+	return Math.max(1 + maxDepth(root.left), 1 + maxDepth(root.right));
+}
+
+// ----------------------------------------------------------------
+
+// Minimum Depth of Binary Tree
+// Given a binary tree, find its minimum depth.
+// The minimum depth is the number of nodes along the shortest path 
+// from the root node down to the nearest leaf node.
+// Source: https://leetcode.com/problems/minimum-depth-of-binary-tree/
+
+// Attempt 1:
+// Works; O(n) runtime, O(log n) space - depth-first traversal
+int minDepth(Node root) {
+    if (root == null) {
+        return 0;
+    }
+    
+    // Why do we need to make these checks?    
+    if (root.left == null) {
+        return minDepth(root.right) + 1;
+    }
+       
+    if (root.right == null) {
+        return minDepth(root.left) + 1;
+    }
+        
+    return Math.min(1 + minDepth(root.left), 1 + minDepth(root.right));
+}
+
+// Solution
+// O(n) runtime, O(n) space - breadth-first traversal
+// Look over carefully!
+int minDepth(Node root) {
+	if (root == null) return 0;
+	Queue<Node> q = new LinkedList();
+	q.add(root);
+	Node rightMost = root;
+	int depth = 1;
+
+	while (!q.isEmpty()) {
+		Node node = q.poll();
+
+		if (node.left == null && node.right == null) {
+			break;
+		}
+
+		if (node.left != null) {
+			q.add(node.left);
+		}
+
+		if (node.right != null) {
+			q.add(node.right);
+		}
+
+		if (node == rightMost) {
+			depth++;
+			rightMost = (node.right != null) ? node.right : node.left;
+		}
+	}
+
+	return depth
+}
+
+// ----------------------------------------------------------------
+
+// Balanced Binary Tree
+// Given a binary tree, determine if it is height-balanced.
+// For this problem, a height-balanced binary tree is defined as a 
+// binary tree in which the depth of the two subtrees of every node 
+// never differ by more than 1.
+// Source: https://leetcode.com/problems/balanced-binary-tree/
+
+// Attempt 1:
+// Works, but O(n^2) runtime, O(n) stack space
+// See above for implementation of maxDepth.
+boolean isBalanced(Node root) {
+	if (root == null) {
+		return true;
+	}
+
+	if (Math.abs(maxDepth(root.left) - maxDepth(root.right)) > 1) {
+		return false;
+	}
+
+	return isBalanced(root.left) && isBalanced(root.right);
+}
+
+// Solution:
+// O(n) runtime, O(n) space
+boolean isBalanced(Node root) {
+	return maxDepth(root) != -1;
+}
+
+int maxDepth(Node root) {
+	if (root == null) {
+		return 0;
+	}
+
+	int L = maxDepth(root.left);
+	if (L == -1) {
+		return -1;
+	}
+
+	int R = maxDepth(root.right);
+	if (R == -1) {
+		return -1;
+	}
+
+	return (Math.abs(L - R) <= 1) ? (Math.max(L, R) + 1) : -1;
+}
