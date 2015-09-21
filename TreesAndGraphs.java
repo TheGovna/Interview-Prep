@@ -1,3 +1,16 @@
+/**
+Route Between Nodes
+Validate BST
+Boggle
+Invert a binary tree
+Search in Rotated Sorted Array
+Maximum Depth of Binary Tree
+Minimum Depth of Binary Tree
+Balanced Binary Tree
+Convert Sorted Array to BST
+Convert Sorted Linked List to Balanced Search Tree
+*/
+
 // 4.1: Route Between Nodes
 // Given a directed graph, design an algorithm to determine if there's a route between two nodes.
 

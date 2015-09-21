@@ -1,3 +1,15 @@
+/**
+Maximum Subarray
+Merge Intervals
+Two Sum
+Find the first unique character in a string
+Valid Palindrome
+Reverse Words in a String
+Longest Substring Without Repeating Characters
+Implement Trie (Prefix Tree)
+Kth Largest Element in an Array
+*/
+
 // Maximum Subarray
 // Find the contiguous subarray within an array (containing at least
 // one number) which has the largest sum.
@@ -447,6 +459,7 @@ public class Trie {
 // distinct element.
 
 // Solution:
+// Average case time is O(n), worst case time is O(n^2).
 int findKthLargest(int[] nums, int k) {
 	if (k < 1 || nums == null) {
 	return 0;
@@ -477,7 +490,7 @@ int getKth(int k, int[] nums, int start, int end) {
         swap(nums, left, right);
     }
     
-    swap(nums, left, end); // understand...
+    swap(nums, left, end);
     
     if (k == left + 1) {
         return pivot;

@@ -1,3 +1,8 @@
+/**
+Climbing Stairs
+Best Time to Buy and Sell Stock
+*/
+
 // Climbing Stairs
 // You are climbing a stair case. It takes n steps to reach the top. 
 // Each time you can either climb 1 or 2 steps. In hoany distinct ways
@@ -39,17 +44,27 @@ int climbStairs() {
 
 // Solution:
 int maxProfit(int[] prices) {
-	if (prices.length == 0 || prices.length == 1) {
-		return 0;
-	}
+    if (prices.length == 0 || prices.length == 1) {
+        return 0;
+    }
+    
+    int[] diffs = new int[prices.length - 1];
+    
+    for (int i = 1; i < diffs.length + 1; i++) {
+        diffs[i - 1] = prices[i] - prices[i - 1];
+    }
+    
+    return maxProfitWithDiffs(diffs);
+}
 
-	int maxProfit = 0;
-	int minBuyingPrice = prices[0];
-
-	for(int i = 1; i < prices.length; i++) {
-		minBuyingPrice = Math.min(minBuyingPrice, prices[i]);
-		maxProfit = Math.max(maxProfit, prices[i] - minBuyingPrice);
-	}
-
-	return maxProfit;
+int maxProfitWithDiffs(int[] diffs) {
+    int maxProfitSoFar = diffs[0];
+    int maxProfitEndingHere = diffs[0];
+    
+    for (int i = 1; i < diffs.length; i++) {
+        maxProfitEndingHere = Math.max(diffs[i], maxProfitEndingHere + diffs[i]);
+        maxProfitSoFar = Math.max(maxProfitSoFar, maxProfitEndingHere);
+    }
+    
+    return Math.max(maxProfitSoFar, 0);
 }
