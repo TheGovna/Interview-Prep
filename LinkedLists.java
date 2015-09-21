@@ -2,6 +2,7 @@
 Return Kth to Last
 Loop Detection
 Linked List Cycle
+Reverse Linked List
 */
 
 // 2.2: Return Kth to Last
@@ -176,3 +177,26 @@ String breakIntoSpaces(String source, Set<String> dictionary) {
 }
 
 // ~~ Solution? ~~~
+
+// ----------------------------------------------------------------
+
+// Reverse Linked List
+// Reverse a singly linked list.
+// Source: https://leetcode.com/problems/reverse-linked-list/
+
+// Solution
+ListNode reverseList(ListNode head) {
+    return reverseListWithPrev(head, null);
+}
+
+// The recursive helper does two things:
+// 1. reverse; 2. return new head
+ListNode reverseListWithPrev(ListNode head, ListNode prev) {
+    if (head == null) {
+        return prev;
+    }
+    
+    ListNode next = head.next;
+    head.next = prev;
+    return reverseListWithPrev(next, head);
+}
