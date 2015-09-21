@@ -94,3 +94,62 @@ public class LRUCache {
         }
     }
 }
+
+// ----------------------------------------------------------------
+
+// Implement Trie (Prefix Tree)
+// Implement a trie with insert, search, and startsWith methods.
+// Source: https://leetcode.com/problems/implement-trie-prefix-tree/
+
+// Solution:
+public class Trie {
+    HashMap<Character, Trie> map;
+
+    public Trie() {
+        // root = new TrieNode();
+        this.map = new HashMap<Character, Trie>();
+    }
+
+    // Inserts a word into the trie.
+    public void insert(String word) {
+        if (word.isEmpty()) {
+            map.put('\0', null);
+            return;
+        }
+        
+        Trie t = map.getOrDefault(word.charAt(0), new Trie());
+        map.put(word.charAt(0), t);
+        t.insert(word.substring(1, word.length()));
+    }
+
+    // Returns if the word is in the trie.
+    public boolean search(String word) {
+        if (word.isEmpty()) {
+            return map.containsKey('\0');
+        }
+        
+        Trie t = map.getOrDefault(word.charAt(0), null);
+        
+        if (t == null) {
+                return false;
+        }
+        
+        return t.search(word.substring(1, word.length()));
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    public boolean startsWith(String prefix) {
+        if (prefix.isEmpty()) {
+            return true;
+        }
+        
+        Trie t = map.getOrDefault(prefix.charAt(0), null);
+        
+        if (t == null) {
+            return false;
+        }
+        
+        return t.startsWith(prefix.substring(1, prefix.length()));
+    }
+}

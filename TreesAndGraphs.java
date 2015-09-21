@@ -112,67 +112,33 @@ boolean checkBSTHelper(Node root, int minValue, int maxValue) {
 //        boggle[][]   = {{'G','I','Z'},
 //                        {'U','E','K'},
 //                        {'Q','S','E'}};
-//       isWord(str): returns true if str is present in dictionary
-//                    else false.
-// Output:  Following words of dictionary are present
-//          GEEKS
-//          QUIZ
+// Output:  {"GEEKS", "QUIZ"}
+String[] findAllWords(String[][] boggle, Set<String> dictionary) {
 
-// Basic idea using dynamic programming:
-// - Keep track of a 2D String array representing the boggle board,
-//   a 2D boolean array representing the visited portions of the
-//   boggle board, and a String array representing the dictionary.
-// - Every element in the boggle board is a potential starting point
-//   for a word in the dictionary. 
-// - What we can do is that for every position (i, j) in the boggle 
-//   board, we attempt to build a word starting with the letter at
-//   (i, j). 
-// - Create an empty string s. Do the following:
-//   1) Make sure that (i, j) is a valid coordinate in the boggle
-//      board and that (i, j) isn't already visited. If any of these
-//      conditions aren't met, we cannot build a word with s
-//   2) Append s to the letter at boggle board (i, j). If the newly
-//      appended s is in the dictionary, we found a word! Add it to
-//      the list of other words we already found.
-//   3) Set (i, j) as visited.
-//   4) Repeat steps 1-4 for all 8 coordinates adjacent to (i, j). 
-ArrayList<String> findAllWords(String[][] boggle, String[] dictionary) {
-	int m = boggle.length;
-	int n = boggle[0].length;
-	boolean visited = new boolean[m][n];
-	ArrayList<String> result = new ArrayList<String>();
+}
 
-	for (int i = 0; i < m; i++) {
-		for (int j = 0; j < n; j++) {
-			String str = "";
-			ArrayList<String> foundWords = findWordsFromStartingPoint(boggle, dictionary, visited, i, j, m, n, str, new ArrayList<String>());
+void findAllWordsFromPosition(int x, int y, String currWord, String[][] boggle, Set<String> dictionary, Stack<int[]> visited) {
+	visited.push({x, y});
 
-			result.addAll(foundWords);
+	if (x > 0 && y > 0 && x < boggle.length && y < boggle[0].length && !visited[x][y]) {
+		int[] xDelta = {-1, 0, 1, 1, 1, 0, -1, -1};
+		int[] yDelta = {1 , 1, 1, 0,-1,-1, -1,  0};
+
+		String newWord = currWord + boggle[x][y];
+
+
+		if (dictionary.contains(newWord)) {
+			System.out.println(newWord);
+		} 
+
+		if (isPrefix(newWord, dictionary)) {
+			for (int i = 0; i < xDelta.length; i++) {
+				findAllWordsFromPosition(x + xDelta[i], y + yDelta[i], newWord, boggle, dictionary, visited);
+			}
 		}
 	}
 
-	return result;
-}
-
-ArrayList<String> findWordsFromStartingPoint(String[][] boggle, String[] dictionary, boolean[][] visited, int i, int j, int m, int n, String str, ArrayList<String> foundWordsSoFar) {
-	if (i > m || i < 0 || j > n || j < 0 || visited[i][j]) {
-		return null;
-	}
-
-	int[] x = {-1, 0, 1, 1, 1, 0, -1};
-	int[] y = {1, 1, 1, 0, -1, -1, -1, 0};
-
-	str += str + boggle[i][j];
-
-	if (dictionary.contains(str)) {
-		foundWordsSoFar.append(str);
-	}
-
-	visited[i][j] = true;
-
-	for (int k = 0; i < 8; k++) {
-		// work on this some more later...
-	}
+	visited.pop();
 }
 
 // ----------------------------------------------------------------
@@ -429,4 +395,62 @@ int maxDepth(Node root) {
 	}
 
 	return (Math.abs(L - R) <= 1) ? (Math.max(L, R) + 1) : -1;
+}
+
+// ----------------------------------------------------------------
+
+// Convert Sorted Array to BST
+// Given an array where elements are sorted in ascending order, 
+// convert it to a height balanced BST.
+// Source: https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/
+
+// Solution:
+// O(n) runtime, O(log n) stack space
+Node sortedArrayToBST(int[] nums) {
+	return sortedArrayToBSTHelper(nums, 0, nums.length - 1);
+}
+
+Node sortedArrayToBSTHelper(int[] nums, int start, int end) {
+	if (start > end) {
+		return null;
+	}
+
+	int mid = (start + end) / 2;
+	Node root = new Node(nums[mid]);
+	root.left = sortedArrayToBSTHelper(nums, start, mid - 1);
+	root.right = sortedArrayToBSTHelper(nums, mid + 1, end);
+
+	return root;
+}
+
+// ----------------------------------------------------------------
+
+// Convert Sorted Linked List to Balanced Search Tree
+// Given a singly linked list where elements are sorted in 
+// ascending order, convert it to a height balanced BST.
+// Source: https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/
+ListNode list;
+
+TreeNode sortedListToBST(ListNode head) {
+	int n = 0;
+	ListNode p = head;
+
+	while (p != null) {
+		p = p.next;
+		n++;
+	}
+
+	list = head;
+	return sLTBST(0, n - 1);
+}
+
+TreeNode sLTBST(int start, int end) {
+	if (start > end) return null;
+	int mid = (start + end) / 2;
+	TreeNode leftChild = sLTBST(start, mid-1);
+	TreeNode parent = new TreeNode(list.val);
+	parent.left = leftChild;
+	list = list.next;
+	parent.right = sLTBST(mid+1, end);
+	return parent;
 }

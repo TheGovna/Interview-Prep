@@ -121,7 +121,7 @@ List<Interval> merge(List<Interval> intervals) {
 // Attempt 1 (Works, but there's a faster way):
 int[] twoSum(int[] nums, int target) {
 	// key = nums[i]
-	// value = target = nums[i]
+	// value = target - nums[i]
 	HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
 
 	for(int i = 0; i < nums.length; i++) {
@@ -379,3 +379,75 @@ int lengthOfLongestSubstring(String s) {
 
 	return maxLength;
 }
+
+// ----------------------------------------------------------------
+
+// Implement Trie (Prefix Tree)
+// Implement a trie with insert, search, and startsWith methods.
+// Source: https://leetcode.com/problems/implement-trie-prefix-tree/
+
+// Solution:
+public class Trie {
+    HashMap<Character, Trie> map;
+
+    public Trie() {
+        // root = new TrieNode();
+        this.map = new HashMap<Character, Trie>();
+    }
+
+    // Inserts a word into the trie.
+    public void insert(String word) {
+        if (word.isEmpty()) {
+            map.put('\0', null);
+            return;
+        }
+        
+        Trie t = map.getOrDefault(word.charAt(0), new Trie());
+        map.put(word.charAt(0), t);
+        t.insert(word.substring(1, word.length()));
+    }
+
+    // Returns if the word is in the trie.
+    public boolean search(String word) {
+        if (word.isEmpty()) {
+            return map.containsKey('\0');
+        }
+        
+        Trie t = map.getOrDefault(word.charAt(0), null);
+        
+        if (t == null) {
+                return false;
+        }
+        
+        return t.search(word.substring(1, word.length()));
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    public boolean startsWith(String prefix) {
+        if (prefix.isEmpty()) {
+            return true;
+        }
+        
+        Trie t = map.getOrDefault(prefix.charAt(0), null);
+        
+        if (t == null) {
+            return false;
+        }
+        
+        return t.startsWith(prefix.substring(1, prefix.length()));
+    }
+}
+
+// ----------------------------------------------------------------
+
+// Given an input string and a dictionary of words, find out if
+// the input string can be segmented into a space-separated
+// sequence of dictionary words. You need to output the
+// minimum number of words.
+// dict: {"a", "aaa", "is", "name"}
+// output: "aaa is a name"
+// wrong output: "a a a is a name"
+// Source: http://www.careercup.com/question?id=5359122669109248
+
+// Use trie from above
