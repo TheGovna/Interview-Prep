@@ -441,6 +441,61 @@ public class Trie {
 
 // ----------------------------------------------------------------
 
+// Kth Largest Element in an Array (good problem!)
+// Find the kth largest element in an unsorted array. Note that it 
+// is the kth largest element in the sorted order, not the kth 
+// distinct element.
+
+// Solution:
+int findKthLargest(int[] nums, int k) {
+	if (k < 1 || nums == null) {
+	return 0;
+    }
+        
+        return getKth(nums.length - k + 1, nums, 0, nums.length - 1);
+}
+
+int getKth(int k, int[] nums, int start, int end) { 
+// k here represents the kth index in the array.
+    int pivot = nums[end];
+    int left = start;
+    int right = end;
+    
+    while (true) {
+        while (nums[left] <= pivot && left < right) {
+            left++;
+        }
+        
+        while (nums[right] >= pivot && left < right) {
+            right--;
+        }
+        
+        if (left == right) {
+            break;
+        }
+        
+        swap(nums, left, right);
+    }
+    
+    swap(nums, left, end); // understand...
+    
+    if (k == left + 1) {
+        return pivot;
+    } else if (k < left + 1) {
+        return getKth(k, nums, start, left - 1);
+    } else {
+        return getKth(k, nums, left + 1, end);
+    }
+}
+
+void swap(int[] nums, int i1, int i2) {
+    int temp = nums[i1];
+    nums[i1] = nums[i2];
+    nums[i2] = temp;
+}
+
+// ----------------------------------------------------------------
+
 // Given an input string and a dictionary of words, find out if
 // the input string can be segmented into a space-separated
 // sequence of dictionary words. You need to output the
