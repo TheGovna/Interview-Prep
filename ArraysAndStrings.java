@@ -509,6 +509,40 @@ void swap(int[] nums, int i1, int i2) {
 
 // ----------------------------------------------------------------
 
+// Number of words in a file (Pinterest interview)
+// Given a file name, print out the number of words in the file in
+// O(1) memory.
+
+// Solution (probably):
+int numWords(String fileName) {
+	try {
+		FileInputStream fs = new FileInputStream(new File(fileName));
+		boolean inWord = false;
+		int numWords = 0;
+		byte[] b = new byte[1];
+		
+		while (fs.read(b) > 0) {
+			if (!inWord && isCharacter(b[0])) {
+				inWord = true;
+				numWords++;
+			} else if (inWord && !isCharacter(b[0])) {
+				inWord = false;
+			}
+		}
+		
+		return numWords;
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return -1;
+}
+
+boolean isCharacter(byte b) {
+	return !Character.isWhitespace((char) b);
+}
+
+// ----------------------------------------------------------------
+
 // Given an input string and a dictionary of words, find out if
 // the input string can be segmented into a space-separated
 // sequence of dictionary words. You need to output the
