@@ -10,6 +10,7 @@ Implement Trie (Prefix Tree)
 Kth Largest Element in an Array
 Permutations of a String
 Longest Palindromic Substring
+One Edit Distance
 */
 
 // Maximum Subarray
@@ -668,6 +669,60 @@ String longestPalindromeFromIndices(String s, int left, int right) {
 	}
 
 	return s.substring(left + 1, right);
+}
+
+// ----------------------------------------------------------------
+
+// One Edit Distance
+// Given two strings S and T, determine if they are both one edit
+// distance apart
+
+// Assume X represents the one-edit character. There are three
+// one-edit distance operations that could be applied to S:
+// 1) Modify operation - modify a character to X in S.
+//		S = "abcde"
+//		T = "abXde"
+// 2) Insert operation - X was inserted before a character in S.
+//		S = "abcde"
+//		T = "abcXde"
+// 3) Append operation - X was appended to the end of S.
+//		S = "abcde"
+//		S = "abcdeX"
+boolean isOneEditDistance(String s, String t) {
+	int m = s.length();
+	int n = t.length();
+
+	if (m > n) {
+		return isOneEditDistance(t, s);
+	}
+
+	if (n - m > 1) {
+		return false;
+	}
+
+	int i = 0;
+	int shift = n - m;
+	while(i < m && s.charAt(i) == t.charAt(i)) {
+		i++;
+	}
+
+	// Encountered Append Operation
+	if (i == m) {
+		return shift > 0;
+	}
+
+	// Encountered Modify Operation
+	if (shift == 0) {
+		i++;
+	}
+
+	// Encountered Modify or Insert Operations
+	while (i < m && s.charAt(i) == t.charAt(i + shift)) {
+		i++;
+	}
+
+	return i == m;
+
 }
 
 // ----------------------------------------------------------------
