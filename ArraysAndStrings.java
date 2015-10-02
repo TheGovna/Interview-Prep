@@ -11,6 +11,7 @@ Kth Largest Element in an Array
 Permutations of a String
 Longest Palindromic Substring
 One Edit Distance
+Integer to Roman
 */
 
 // Maximum Subarray
@@ -727,13 +728,35 @@ boolean isOneEditDistance(String s, String t) {
 
 // ----------------------------------------------------------------
 
-// Given an input string and a dictionary of words, find out if
-// the input string can be segmented into a space-separated
-// sequence of dictionary words. You need to output the
-// minimum number of words.
-// dict: {"a", "aaa", "is", "name"}
-// output: "aaa is a name"
-// wrong output: "a a a is a name"
-// Source: http://www.careercup.com/question?id=5359122669109248
+// Integer to Roman
+// Given an integer, convert it to a roman numeral.
+// Source: https://leetcode.com/problems/integer-to-roman/
 
-// Use trie from above
+String intToRoman(int num) {
+    final int[] values = {
+        1000, 900, 500, 400,
+        100, 90, 50, 40,
+        10, 9, 5, 4,
+        1 };
+    final String[] symbols = {
+        "M", "CM", "D", "CD",
+        "C", "XC", "L", "XL",
+        "X", "IX", "V", "IV",
+        "I" };
+    
+    StringBuilder sb = new StringBuilder();
+    
+    int i = 0;
+    while (num > 0) {
+        int temp = num / values[i];
+        
+        for (int j = 0; j < temp; j++) {
+            sb.append(symbols[i]);
+            num -= values[i];
+        }
+        
+        i++;
+    }
+    
+    return sb.toString();
+}
