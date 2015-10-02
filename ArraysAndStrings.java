@@ -9,6 +9,7 @@ Longest Substring Without Repeating Characters
 Implement Trie (Prefix Tree)
 Kth Largest Element in an Array
 Permutations of a String
+Longest Palindromic Substring
 */
 
 // Maximum Subarray
@@ -548,6 +549,7 @@ boolean isCharacter(byte b) {
 // Source: http://stackoverflow.com/questions/4240080/generating-all-permutations-of-a-given-string
 // Solution Source: http://www.ericleschinski.com/c/java_permutations_recursion/
 
+// Shortest solution:
 public static void permutation(String s) {
 	permutation("", s);
 }
@@ -562,6 +564,110 @@ private static void permutation(String prefix, String s) {
 			permutation(prefix + s.charAt(i), s.substring(0, i) + s.substring(i + 1), n);
 		}
 	}
+}
+
+/*
+"", "abcd"
+	"a", "bcd" ---> i = 0
+		"ab"
+			"abc"
+				abcd, ""
+			abd
+				abdc, ""
+		"ac"
+			acb
+				acbd
+			acd
+				acdb
+		"ad"
+	"b", "acd" ---> i = 1
+	"c", "abd" ---> i = 2
+	"d", "abc" ---> i = 3
+*/
+
+// Solution w/out Java I/O
+/**
+ * List permutation of a string
+ * 
+ * @param s the input string
+ * @return  the list of permutation
+ */
+public static ArrayList<String> permutation(String s) {
+    // The result
+    ArrayList<String> res = new ArrayList<String>();
+    // If input string's length is 1, return {s}
+    if (s.length() == 1) {
+        res.add(s);
+    } else if (s.length() > 1) {
+        int lastIndex = s.length() - 1;
+        // Find out the last character
+        String last = s.substring(lastIndex);
+        // Rest of the string
+        String rest = s.substring(0, lastIndex);
+        // Perform permutation on the rest string and
+        // merge with the last character
+        res = merge(permutation(rest), last);
+    }
+    return res;
+}
+
+/**
+ * @param list a result of permutation, e.g. {"ab", "ba"}
+ * @param c    the last character
+ * @return     a merged new list, e.g. {"cab", "acb" ... }
+ */
+public static ArrayList<String> merge(ArrayList<String> list, String c) {
+    ArrayList<String> res = new ArrayList<String>();
+    // Loop through all the string in the list
+    for (String s : list) {
+        // For each string, insert the last character to all possible postions
+        // and add them to the new list
+        for (int i = 0; i <= s.length(); ++i) {
+            String ps = new StringBuffer(s).insert(i, c).toString();
+            res.add(ps);
+        }
+    }
+    return res;
+}
+
+// ----------------------------------------------------------------
+
+// Longest Palindromic Substring
+// Source: https://oj.leetcode.com/problems/longest-palindromic-substring/
+
+// Solution:
+String longestPalindrome(String s) {
+	if (s == null) return null;
+
+	String longest = s.substring(0, 1);
+
+	for (int i = 0; i < s.length(); i++) {
+		// odd cases like 121
+		String palindrome = longestPalindromeFromIndices(s, i, i);
+		if (palindrome.length() > longest.length()) {
+			longest = palindrome;
+		}
+
+		// even cases like 1221
+		String palindrome = longestPalindromeFromIndices(s, i, i + 1);
+		if (palindrome.length() > longest.length()) {
+			longest = palindrome;
+		}
+	}
+
+	return longest;
+}
+
+String longestPalindromeFromIndices(String s, int left, int right) {
+	if (left > right) return null;
+
+	while (left >= 0 && right < s.length()
+		&& s.charAt(left) == s.charAt(right)) {
+	left--;
+	right++;
+	}
+
+	return s.substring(left + 1, right);
 }
 
 // ----------------------------------------------------------------
