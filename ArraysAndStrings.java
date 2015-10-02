@@ -12,6 +12,7 @@ Permutations of a String
 Longest Palindromic Substring
 One Edit Distance
 Integer to Roman
+Roman to Integer
 */
 
 // Maximum Subarray
@@ -732,6 +733,7 @@ boolean isOneEditDistance(String s, String t) {
 // Given an integer, convert it to a roman numeral.
 // Source: https://leetcode.com/problems/integer-to-roman/
 
+// Solution:
 String intToRoman(int num) {
     final int[] values = {
         1000, 900, 500, 400,
@@ -759,4 +761,41 @@ String intToRoman(int num) {
     }
     
     return sb.toString();
+}
+
+// ----------------------------------------------------------------
+
+// Roman to Integer
+// Given a roman numeral, convert it to an integer.
+// https://leetcode.com/problems/roman-to-integer/
+
+// Solution:
+public class Solution {
+    HashMap<Character, Integer> map = new HashMap();
+    
+    public int romanToInt(String s) {
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+        
+        int total = 0;
+        int prev = 0;
+        
+        for (Character c : s.toCharArray()) {
+            int current = map.get(c);
+            if (current > prev) {
+                total += current - 2 * prev;
+            } else {
+                total += current;
+            }
+            
+            prev = current;
+        }
+        
+        return total;
+    }
 }
