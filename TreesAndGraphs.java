@@ -9,6 +9,7 @@ Minimum Depth of Binary Tree
 Balanced Binary Tree
 Convert Sorted Array to BST
 Convert Sorted Linked List to Balanced Search Tree
+Print Binary Tree in Level Order
 */
 
 // 4.1: Route Between Nodes
@@ -466,4 +467,35 @@ TreeNode sLTBST(int start, int end) {
 	list = list.next;
 	parent.right = sLTBST(mid+1, end);
 	return parent;
+}
+
+// ----------------------------------------------------------------
+
+// Print Binary Tree in Level Order
+// Source: http://articles.leetcode.com/2010/09/printing-binary-tree-in-level-order.html
+
+void printLevelOrder(TreeNode root) {
+	if (root == null) {
+		return;
+	}
+
+	Queue<TreeNode> currentLevel = new LinkedList<TreeNode>();
+	Queue<TreeNode> nextLevel = new LinkedList<TreeNode>();
+
+	currentLevel.enqueue(root);
+
+	while (!currentLevel.isEmpty()) {
+		TreeNode currNode = currentLevel.dequeue();
+
+		if (currNode != null) {
+			System.out.print(currNode.value + " ");
+			nextLevel.enqueue(currNode.left);
+			nextLevel.enqueue(currNode.right);
+		}
+
+		if (currentLevel.isEmpty()) {
+			System.out.println();
+			swap(currentLevel, nextLevel);
+		}
+	}
 }
