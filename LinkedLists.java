@@ -3,6 +3,7 @@ Return Kth to Last
 Loop Detection
 Linked List Cycle
 Reverse Linked List
+Swap Nodes in Pairs
 */
 
 // 2.2: Return Kth to Last
@@ -199,4 +200,27 @@ ListNode reverseListWithPrev(ListNode head, ListNode prev) {
     ListNode next = head.next;
     head.next = prev;
     return reverseListWithPrev(next, head);
+}
+
+// ----------------------------------------------------------------
+
+// Swap Nodes in Pairs
+// Given a linked list, swap every two adjacent nodes and return its head.
+// For example,
+// Given 1->2->3->4, you should return the list as 2->1->4->3.
+// Source: https://leetcode.com/problems/swap-nodes-in-pairs/
+
+// Solution
+public ListNode swapPairs(ListNode head) {
+    if (head == null || head.next == null) {
+        return head;
+    }
+    
+    ListNode next = head.next;
+    ListNode newHead = next.next;
+    
+    next.next = head;
+    head.next = swapPairs(newHead);
+    
+    return next;
 }
