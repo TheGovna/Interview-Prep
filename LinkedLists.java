@@ -40,7 +40,7 @@ Node getKthToLastNode(Node head, int k) {
 		kthNode = kthNode.next;
 	}
 
-	while (kthNode.next != null) {
+	while (kthNode != null) {
 		currentNode = currentNode.next;
 		kthNode = kthNode.next;
 	}
@@ -156,28 +156,6 @@ boolean hasCycle(Node head) {
 
 	return false;
 }
-
-// ----------------------------------------------------------------
-
-// Write a program that breaks up a string of words with no spaces
-// into a string with the appropriate spaces.
-// Source: http://www.google.com/about/careers/lifeatgoogle/hangout-on-air-tech-interviewing.html
-
-// Attempt 1:
-String breakIntoSpaces(String source, Set<String> dictionary) {
-	for (int i = 1; i < source.length; i++) {
-		String left = source.subString(0, i);
-		String right = source.subString(i, source.length);
-
-		if (dictionary.contains(left) && dictionary.contains(right)) {
-			return left + " " + right;
-		}
-	}
-
-	return source;
-}
-
-// ~~ Solution? ~~~
 
 // ----------------------------------------------------------------
 

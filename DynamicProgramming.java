@@ -1,6 +1,7 @@
 /**
 Climbing Stairs
 Best Time to Buy and Sell Stock
+Minimum Number of Coins to Make Change
 */
 
 // Climbing Stairs
@@ -68,3 +69,10 @@ int maxProfitWithDiffs(int[] diffs) {
     
     return Math.max(maxProfitSoFar, 0);
 }
+
+// ----------------------------------------------------------------
+
+// Minimum Number of Coins to Make Change
+// READ THIS: http://www.mathcs.emory.edu/~cheung/Courses/323/Syllabus/DynProg/money-change.html
+
+// ----------------------------------------------------------------

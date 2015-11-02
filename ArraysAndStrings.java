@@ -6,7 +6,6 @@ Find the first unique character in a string
 Valid Palindrome
 Reverse Words in a String
 Longest Substring Without Repeating Characters
-Implement Trie (Prefix Tree)
 Kth Largest Element in an Array
 Permutations of a String
 Longest Palindromic Substring
@@ -185,33 +184,6 @@ int[] twoSum(int[] nums, int target) {
 // Find the first unique character in a string
 // Source: Aaron (Palantir coding challenge)
 
-// Attempt 1 (Probabaly works, but there are cleaner ways):
-char getFirstUnique(String str) {
-	HashMap<Character, boolean> isUniqueMap = new HashMap<Character, boolean>();
-	HashMap<Character, Integer> firstOccurrenceMap = new HashMap<char, Integer>();
-
-	for(int i = 0; i < str.length; i++) {
-		if (!isUniqueMap.containsKey(str.charAt(i))) {
-			isUniqueMap.put(str.charAt(i), true);
-			firstOccurrenceMap.put(str.charAt(i), i);
-		} else {
-			isUniqueMap.put(str.charAt(i), false);
-		}
-	}
-
-	int indexOfFirstOccurrence = firstOccurrenceMap.keySet().size() - 1;
-
-	char firstChar;
-	for(char c : isUniqueMap.keySet()) {
-		if (isUniqueMap.get(c) && firstOccurrenceMap.get(c) < indexOfFirstOccurrence) {
-			indexOfFirstOccurrence = firstOccurrenceMap.get(c);
-			firstChar = c;
-		}
-	}
-
-	return firstChar;
-}
-
 // Solution:
 char getFirstUnique(String str) {
 	HashMap<Character, Integer> map = new HashMap<Character, Integer>();
@@ -306,38 +278,37 @@ boolean isPalindrome(String s) {
 // Output: "blue is sky the"
 // Source: https://leetcode.com/problems/reverse-words-in-a-string/
 
-// Attempt 1:
-// works fine, requires knowledge of REGEX
-String reverseWords(String s) {
-	String str = s.replaceAll("\\s+", " ");
-	StringBuilder sb = new StringBuilder();
-	String[] sArray = str.split(" ");
-
-	for(int i = sArray.length - 1; i >= 0; i--) {
-		sb.append(sArray[i] + " ");
-	}
-
-	return sb.toString().trim();
+// Solution:
+public String reverseWords(String s) {
+    String str = s.replaceAll("\\s+", " ").trim();
+    if (str.length() == 0) {
+        return "";
+    }
+    
+    char[] strArray = str.toCharArray();
+    reverse(strArray, 0, strArray.length - 1);
+    
+    int start = 0;
+    for (int i = 0; i < strArray.length; i++) {
+        if (strArray[i] == ' ') {
+            reverse(strArray, start, i - 1);
+            start = i + 1;
+        }
+    }
+    
+    reverse(strArray, start, strArray.length - 1);
+    
+    return new String(strArray);
 }
 
-// Solution:
-// Doesn't require regex knowledge
-String reverseWords(String s) {
-	StringBuilder sb = new StringBuilder();
-	int j = s.length();
-
-	for(int i = s.length() - 1; i >= 0; i--) {
-		if (s.charAt(i) == ' ') {
-			j = i;
-		} else if (i == 0 || s.charAt(i - 1) == ' ') {
-			if (sb.length() != 0) {
-				sb.append(' ');
-			}
-			sb.append(s.substring(i, j));
-		}
-	}
-
-	return sb.toString();
+public static void reverse(char[] arr, int i, int j) {
+    while (i < j) {
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+        i++;
+        j--;
+    }
 }
 
 // ----------------------------------------------------------------
@@ -386,7 +357,7 @@ int lengthOfLongestSubstring(String s) {
 	int i = 0; maxLength = 0;
 
 	for (int j = 0; j < s.length(); j++) {
-		if (charMap[s.charAt(j) >= i]) {
+		if (charMap[s.charAt(j)] >= i) {
 			i = charMap[s.charAt(j)] + 1;
 		}
 
@@ -395,65 +366,6 @@ int lengthOfLongestSubstring(String s) {
 	}
 
 	return maxLength;
-}
-
-// ----------------------------------------------------------------
-
-// Implement Trie (Prefix Tree)
-// Implement a trie with insert, search, and startsWith methods.
-// Source: https://leetcode.com/problems/implement-trie-prefix-tree/
-
-// Solution:
-public class Trie {
-    HashMap<Character, Trie> map;
-
-    public Trie() {
-        // root = new TrieNode();
-        this.map = new HashMap<Character, Trie>();
-    }
-
-    // Inserts a word into the trie.
-    public void insert(String word) {
-        if (word.isEmpty()) {
-            map.put('\0', null);
-            return;
-        }
-        
-        Trie t = map.getOrDefault(word.charAt(0), new Trie());
-        map.put(word.charAt(0), t);
-        t.insert(word.substring(1, word.length()));
-    }
-
-    // Returns if the word is in the trie.
-    public boolean search(String word) {
-        if (word.isEmpty()) {
-            return map.containsKey('\0');
-        }
-        
-        Trie t = map.getOrDefault(word.charAt(0), null);
-        
-        if (t == null) {
-                return false;
-        }
-        
-        return t.search(word.substring(1, word.length()));
-    }
-
-    // Returns if there is any word in the trie
-    // that starts with the given prefix.
-    public boolean startsWith(String prefix) {
-        if (prefix.isEmpty()) {
-            return true;
-        }
-        
-        Trie t = map.getOrDefault(prefix.charAt(0), null);
-        
-        if (t == null) {
-            return false;
-        }
-        
-        return t.startsWith(prefix.substring(1, prefix.length()));
-    }
 }
 
 // ----------------------------------------------------------------
@@ -467,10 +379,10 @@ public class Trie {
 // Average case time is O(n), worst case time is O(n^2).
 int findKthLargest(int[] nums, int k) {
 	if (k < 1 || nums == null) {
-	return 0;
+		return 0;
     }
         
-        return getKth(nums.length - k + 1, nums, 0, nums.length - 1);
+    return getKth(nums.length - k + 1, nums, 0, nums.length - 1);
 }
 
 int getKth(int k, int[] nums, int start, int end) { 
