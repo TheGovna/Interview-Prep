@@ -2,6 +2,7 @@
 Climbing Stairs
 Best Time to Buy and Sell Stock
 Minimum Number of Coins to Make Change
+Egg Drop Problem
 */
 
 // Climbing Stairs
@@ -76,3 +77,7 @@ int maxProfitWithDiffs(int[] diffs) {
 // READ THIS: http://www.mathcs.emory.edu/~cheung/Courses/323/Syllabus/DynProg/money-change.html
 
 // ----------------------------------------------------------------
+
+// Egg Drop Problem
+// READ THIS: http://datagenetics.com/blog/july22012/index.html
+// AND THIS: http://www.programmerinterview.com/index.php/puzzles/2-eggs-100-floors-puzzle/
