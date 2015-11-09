@@ -1,5 +1,6 @@
 /**
 Different Ways to Add Parentheses
+Pow(x, n)
 */
 
 // Different Ways to Add Parentheses
@@ -44,4 +45,31 @@ public List<Integer> diffWaysToCompute(String input) {
     }
     
     return result;
+}
+
+// ----------------------------------------------------------------
+
+// Pow(x, n)
+// Source: https://leetcode.com/problems/powx-n/
+
+// Solution
+public double myPow(double x, int n) {
+    if (n == 0) {
+        return 1;
+    }
+    
+    if (n == 1) {
+        return x;
+    }
+    
+    if (n < 0) {
+        return 1 / myPow(x, -n);
+    }
+    
+    if (n % 2 == 0) {
+        double temp = myPow(x, n / 2);
+        return temp * temp;
+    }
+    
+    return x * myPow(x, n - 1);
 }

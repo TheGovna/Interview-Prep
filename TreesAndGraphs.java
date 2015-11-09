@@ -10,6 +10,8 @@ Balanced Binary Tree
 Convert Sorted Array to BST
 Convert Sorted Linked List to Balanced Search Tree
 Print Binary Tree in Level Order
+Binary Tree Inorder Traversal
+Kth Smallest Element in a BST
 */
 
 // 4.1: Route Between Nodes
@@ -498,4 +500,90 @@ void printLevelOrder(TreeNode root) {
 			swap(currentLevel, nextLevel);
 		}
 	}
+}
+
+// ----------------------------------------------------------------
+
+// Binary Tree Inorder Traversal
+// Source: https://leetcode.com/problems/binary-tree-inorder-traversal/
+
+// Recursive:
+public class Solution {
+    List<Integer> result = new ArrayList<Integer>();
+    
+    public List<Integer> inorderTraversal(TreeNode root) {
+        if (root == null) {
+            return result;
+        }
+        
+        helper(root);
+        
+        return result;
+    }
+    
+    public void helper(TreeNode root) {
+        if (root.left != null) {
+            helper(root.left);
+        }
+        
+        result.add(root.val);
+        
+        if (root.right != null) {
+            helper(root.right);
+        }
+    }
+}
+
+// Iterative (preferable):
+public List<Integer> inorderTraversal(TreeNode root) {
+    List<Integer> result = new ArrayList<Integer>();
+    Stack<TreeNode> stack = new Stack<TreeNode>();
+    
+    TreeNode curr = root;
+    
+    while (!stack.isEmpty() || curr != null) {
+        if (curr != null) {
+            stack.push(curr);
+            curr = curr.left;
+        } else {
+            TreeNode node = stack.pop();
+            result.add(node.val);
+            curr = node.right;
+        }
+    }
+    
+    return result;
+}
+
+// ----------------------------------------------------------------
+
+// Kth Smallest Element in a BST
+// Given a binary search tree, write a function kthSmallest to 
+// find the kth smallest element in it.
+// Source: https://leetcode.com/problems/kth-smallest-element-in-a-bst/
+
+// Iterative (NOTE: pretty much same as inorderTraversal):
+public int kthSmallest(TreeNode root, int k) {
+    int count = 0;
+    Stack<TreeNode> stack = new Stack<TreeNode>();
+    
+    TreeNode curr = root;
+    
+    while (!stack.isEmpty() || curr != null) {
+        if (curr != null) {
+            stack.push(curr);
+            curr = curr.left;
+        } else {
+            TreeNode node = stack.pop();
+            
+            count++;
+            if (count == k) {
+                return node.val;
+            }
+            
+            curr = node.right;
+        }
+    }
+    
+    return count;
 }
