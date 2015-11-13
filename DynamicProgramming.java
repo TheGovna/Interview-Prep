@@ -81,3 +81,5 @@ int maxProfitWithDiffs(int[] diffs) {
 // Egg Drop Problem
 // READ THIS: http://datagenetics.com/blog/july22012/index.html
 // AND THIS: http://www.programmerinterview.com/index.php/puzzles/2-eggs-100-floors-puzzle/
+
+// ----------------------------------------------------------------

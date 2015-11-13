@@ -12,6 +12,7 @@ Longest Palindromic Substring
 One Edit Distance
 Integer to Roman
 Roman to Integer
+Shuffle an Array
 */
 
 // Maximum Subarray
@@ -20,28 +21,6 @@ Roman to Integer
 // Input: [−2,1,−3,4,−1,2,1,−5,4]
 // Output: 6 (since subarray with largest sum is [4,−1,2,1])
 // Source: https://leetcode.com/problems/maximum-subarray/
-
-// Attempt 1 (Wrong):
-int maxSubarray(int[] nums) {
-	int maxSum = nums[0];
-	int sumSoFar = nums[0];
-
-	if (nums.length == 1) {
-		return sumSoFar;
-	}
-
-	for (int i = 1; i < nums.length; i++) {
-		sumSoFar += nums[i];
-
-		if (sumSoFar >= maxSum) {
-			maxSum = sumSoFar;
-		} else {
-			sumSoFar = 0;
-		}
-	}
-
-	return maxSum;
-}
 
 // Solution:
 int maxSubarray(int[] nums) {
@@ -744,4 +723,25 @@ public class Solution {
         
         return total;
     }
+}
+
+// ----------------------------------------------------------------
+
+// Shuffle an Array
+public int[] shuffle(int[] array) {
+	Random random = new Random();
+
+	for (int i = 0; i < array.length; i++) {
+		int randomIndex = random.nextInt(array.length);
+
+		swap(array, i, randomIndex);
+	}
+
+	return array;
+}
+
+public void swap(int[] array, int i, int j) {
+	int temp = array[i];
+	array[i] = array[j];
+	array[j] = temp;
 }
