@@ -12,6 +12,7 @@ Convert Sorted Linked List to Balanced Search Tree
 Print Binary Tree in Level Order
 Binary Tree Inorder Traversal
 Kth Smallest Element in a BST
+Lowest Common Ancestor of Binary Tree
 */
 
 // 4.1: Route Between Nodes
@@ -586,4 +587,34 @@ public int kthSmallest(TreeNode root, int k) {
     }
     
     return count;
+}
+
+// ----------------------------------------------------------------
+
+// Lowest Common Ancestor of Binary Tree
+// Given a binary tree (not a binary search tree) and two values 
+// say n1 and n2, write a program to find the least common ancestor.
+// Source: http://www.geeksforgeeks.org/lowest-common-ancestor-binary-tree-set-1/
+
+public TreeNode findLCA(TreeNode root, TreeNode n1, TreeNode n2) {
+	if (root == null) {
+		return null;
+	}
+
+	if (root.val == n1.val || root.val == n2.val) {
+		return root;
+	}
+
+	TreeNode lcaLeft = findLCA(root.left, n1, n2);
+	TreeNode lcaRight = findLCA(root.right, n1, n2);
+
+	// If both of the calls from above are non-null,
+	// then 1 key is present in 1 subtree and the other key
+	// is present in the other subtree.
+	// So this node is LCA
+	if (lcaLeft != null && lcaRight != null) {
+		return root;
+	}
+
+	return (lcaLeft != null) ? lcaLeft : lcaRight;
 }

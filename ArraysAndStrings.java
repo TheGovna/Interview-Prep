@@ -728,6 +728,8 @@ public class Solution {
 // ----------------------------------------------------------------
 
 // Shuffle an Array
+// Source: http://www.programcreek.com/2012/02/java-method-to-shuffle-an-int-array-with-random-order/
+
 public int[] shuffle(int[] array) {
 	Random random = new Random();
 
