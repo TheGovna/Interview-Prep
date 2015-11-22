@@ -13,6 +13,7 @@ Print Binary Tree in Level Order
 Binary Tree Inorder Traversal
 Kth Smallest Element in a BST
 Lowest Common Ancestor of Binary Tree
+Binary Tree Maximum Path Sum
 */
 
 // 4.1: Route Between Nodes
@@ -51,18 +52,24 @@ boolean pathExists(Graph g, Node n1, Node n2) {
 
 	Queue<Node> queue = new LinkedList<Node>();
 
+	// Set all nodes as Unvisited
 	for (Node n : g.getNodes()) {
 		n.state = State.Unvisited;
 	}
 
+	// You're Visiting n1; enqueue it
 	n1.state = State.Visiting;
 	queue.enqueue(n1);
 	Node top;
 
+	// While the queue isn't empty...
 	while(!queue.isEmpty()) {
+		// Get the top thing in the queue
 		Node top = queue.dequeue();
 
 		if (top != null) {
+			// Check top's Unvisited children to see if it's n2
+			// If a child is Unvisited and it's not n2, you are Visiting it; enqueue it
 			for (Node child : top.children) {
 				if (child.state == State.Unvisited) {
 					if (child == n2) {
@@ -74,6 +81,8 @@ boolean pathExists(Graph g, Node n1, Node n2) {
 				}
 			}
 
+			// We're done checking all of top's children;
+			// top has now been Visited
 			top.state = State.Visited;	
 		}
 	}
@@ -86,24 +95,6 @@ boolean pathExists(Graph g, Node n1, Node n2) {
 // 4.5: Validate BST
 // Implement a function to check if a binary tree is a binary search tree.
 
-// Attempt 1:
-boolean checkBST(Node root) {
-	if (root == null) {
-		return true;
-	}
-
-	if (root.left && root.left.value >= root.value) {
-		return false;
-	}	
-
-	if (root.right && root.right.value <= root.value) {
-		return false;
-	}
-
-	return checkBST(root.left) && checkBST(root.right);
-}
-
-// Solution:
 boolean checkBST(Node root) {
 	return checkBSTHelper(root, -1 * Math.Infinity, Math.Infinity);
 }
@@ -617,4 +608,40 @@ public TreeNode findLCA(TreeNode root, TreeNode n1, TreeNode n2) {
 	}
 
 	return (lcaLeft != null) ? lcaLeft : lcaRight;
+}
+
+// ----------------------------------------------------------------
+
+// Binary Tree Maximum Path Sum
+// Given a binary tree, find the maximum path sum.
+// For this problem, a path is defined as any sequence of nodes 
+// from some starting node to any node in the tree along the 
+// parent-child connections. The path does not need to go through 
+// the root.
+// Source: https://leetcode.com/problems/binary-tree-maximum-path-sum/
+
+// UNDERSTAND SOLUTION, IT'S KINDA BOTTOM-UP AND NONINTUITIVE
+public class Solution {
+    int maxSoFar = Integer.MIN_VALUE;
+    
+    public int maxPathSum(TreeNode root) {
+        helper(root);
+        return maxSoFar;
+    }
+    
+    public int helper(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        
+        int leftPath = Math.max(helper(root.left), 0);
+        int rightPath = Math.max(helper(root.right), 0);
+        int maxPathCurr = root.val + leftPath + rightPath;
+        
+        if (maxPathCurr > maxSoFar) {
+            maxSoFar = maxPathCurr;
+        }
+        
+        return root.val + Math.max(leftPath, rightPath);
+    }
 }

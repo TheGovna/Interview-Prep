@@ -77,7 +77,7 @@ boolean hasCycle(Node head) {
 // Reverse a singly linked list.
 // Source: https://leetcode.com/problems/reverse-linked-list/
 
-// Solution
+// Solution 1 (recursive w/ helper)
 ListNode reverseList(ListNode head) {
     return reverseListWithPrev(head, null);
 }
@@ -92,6 +92,22 @@ ListNode reverseListWithPrev(ListNode head, ListNode prev) {
     ListNode next = head.next;
     head.next = prev;
     return reverseListWithPrev(next, head);
+}
+
+// Solution 2 (iterative)
+ListNode reverseList(ListNode head) {
+	ListNode result = null;
+	ListNode current = head;
+	ListNode next;
+
+	while (current != null) {
+		next = current.next;
+		current.next = result;
+		result = current;
+		current = next;
+	}
+
+	return result;
 }
 
 // ----------------------------------------------------------------
