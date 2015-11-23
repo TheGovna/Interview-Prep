@@ -3,6 +3,7 @@ Climbing Stairs
 Best Time to Buy and Sell Stock
 Minimum Number of Coins to Make Change
 Egg Drop Problem
+Longest Increasing Subsequence
 */
 
 // Climbing Stairs
@@ -83,3 +84,41 @@ int maxProfitWithDiffs(int[] diffs) {
 // AND THIS: http://www.programmerinterview.com/index.php/puzzles/2-eggs-100-floors-puzzle/
 
 // ----------------------------------------------------------------
+
+// Longest Increasing Subsequence
+// Given an unsorted array of integers, find the length of longest 
+// increasing subsequence.
+// Source: https://leetcode.com/problems/longest-increasing-subsequence/
+
+// Solution (DP based on https://youtu.be/U-xOVWlcgmM?list=PL962BEE1A26238CA3)
+public int lengthOfLIS(int[] nums) {
+    if (nums.length == 0) return 0;
+    
+    // Let LS(i) = length of longest increasing subsequence which includes element nums[i] as its last element
+    // LS(i) = 1 + max(LS(j)) --> where 0 < j < i and nums[i] > nums[j] 
+    //       = 1              --> if no such j is found
+    int[] LS = new int[nums.length];
+    LS[0] = 1;
+    int maxLS = LS[0];
+    int maxLSSoFar = Integer.MIN_VALUE;
+    
+    for (int i = 1; i < nums.length; i++) {
+        maxLSSoFar = Integer.MIN_VALUE;
+        
+        for (int j = 0; j < i; j++) {
+            if (nums[i] > nums[j]) {
+                maxLSSoFar = Math.max(maxLSSoFar, LS[j]);
+            }
+        }
+        
+        if (maxLSSoFar == Integer.MIN_VALUE) {
+            LS[i] = 1;
+        } else {
+            LS[i] = maxLSSoFar + 1;
+        }
+        
+        maxLS = Math.max(maxLS, LS[i]);
+    }
+    
+    return maxLS;
+}
