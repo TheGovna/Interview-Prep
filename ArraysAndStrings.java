@@ -14,6 +14,7 @@ Integer to Roman
 Roman to Integer
 Shuffle an Array
 Number of Islands
+Group Anagrams
 */
 
 // Maximum Subarray
@@ -596,8 +597,6 @@ public List<List<Integer>> permute(int[] num) {
 				ArrayList<Integer> temp = new ArrayList<Integer>(l);
 				current.add(temp);
  
-				//System.out.println(temp);
- 
 				// - remove num[i] add
 				l.remove(j);
 			}
@@ -840,4 +839,39 @@ public void flood(boolean[][]visited, char[][]grid, int row, int col) {
             flood(visited, grid, row - 1, col);
         }
     }
+}
+
+// ----------------------------------------------------------------
+
+// Group Anagrams
+// Given an array of strings, group anagrams together.
+// Source: https://leetcode.com/problems/anagrams/
+
+public List<List<String>> groupAnagrams(String[] strs) {
+    List<List<String>> result = new ArrayList<List<String>>();
+    if (strs.length == 0) return result;
+    
+    HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+    
+    for (String s : strs) {
+        char[] sArray = s.toCharArray();
+        Arrays.sort(sArray);
+        String sSorted = new String(sArray);
+        
+        if (map.containsKey(sSorted)) {
+            List<String> list = map.get(sSorted);
+            list.add(s);
+        } else {
+            List<String> list = new ArrayList<String>();
+            list.add(s);
+            map.put(sSorted, list);
+        }
+    }
+    
+    for (List<String> list : map.values()) {
+        Collections.sort(list);
+        result.add(list);
+    }
+    
+    return result;
 }
