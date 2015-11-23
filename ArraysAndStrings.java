@@ -13,6 +13,7 @@ One Edit Distance
 Integer to Roman
 Roman to Integer
 Shuffle an Array
+Number of Islands
 */
 
 // Maximum Subarray
@@ -796,4 +797,47 @@ public void swap(int[] array, int i, int j) {
 	int temp = array[i];
 	array[i] = array[j];
 	array[j] = temp;
+}
+
+// ----------------------------------------------------------------
+
+// Number of Islands
+// Given a 2d grid map of '1's (land) and '0's (water), count the 
+// number of islands. An island is surrounded by water and is 
+// formed by connecting adjacent lands horizontally or vertically. 
+// You may assume all four edges of the grid are all surrounded by 
+// water.
+// Source: https://leetcode.com/problems/number-of-islands/
+
+public int numIslands(char[][] grid) {
+    if (grid.length == 0 || grid[0].length == 0) return 0;
+    
+    int count = 0;
+    boolean[][] visited = new boolean[grid.length][grid[0].length];
+    
+    for (int row = 0; row < grid.length; row++) {
+        for (int col = 0; col < grid[0].length; col++) {
+            if (!visited[row][col] && grid[row][col] == '1') {
+                visited[row][col] = true;
+                count++;
+                flood(visited, grid, row, col + 1);
+                flood(visited, grid, row + 1, col);
+            }
+        }
+    }
+    
+    return count;
+}
+
+public void flood(boolean[][]visited, char[][]grid, int row, int col) {
+    if (row >= 0 && row < grid.length && col >= 0 && col < grid[0].length && !visited[row][col]) {
+        visited[row][col] = true;
+        
+        if (grid[row][col] == '1') {
+            flood(visited, grid, row, col + 1);
+            flood(visited, grid, row, col - 1);
+            flood(visited, grid, row + 1, col);
+            flood(visited, grid, row - 1, col);
+        }
+    }
 }
