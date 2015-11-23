@@ -19,27 +19,6 @@ Binary Tree Maximum Path Sum
 // 4.1: Route Between Nodes
 // Given a directed graph, design an algorithm to determine if there's a route between two nodes.
 
-// Attempt 1:
-boolean pathExists(Node n1, Node n2) {
-	Queue<Node> queue = new LinkedList<Node>();
-
-	queue.enqueue(n1);
-
-	while(!queue.isEmpty()) {
-		Node top = queue.dequeue();
-
-		if (top == n2) {
-			return true;
-		}
-
-		for (Node child : top.children) {
-			queue.enqueue(child);
-		}
-	}
-
-	return false;
-}
-
 // Solution:
 enum State {
 	Unvisited,
@@ -121,6 +100,7 @@ boolean checkBSTHelper(Node root, int minValue, int maxValue) {
 //                        {'U','E','K'},
 //                        {'Q','S','E'}};
 // Output:  {"GEEKS", "QUIZ"}
+// LOOK OVER
 String[] findAllWords(String[][] boggle, Set<String> dictionary) {
 
 }
@@ -195,14 +175,17 @@ Node invertTree(Node root) {
 		return null;
 	}
 
+	// Invert left child
 	if (root.left != null) {
 		invertTree(root.left);
 	}
 
+	// Invert right child
 	if (root.right != null) {
 		invertTree(root.right);
 	}
 
+	// Swap root's children
 	if (root.left != null || root.right != null) {
 		swapChildren(root);
 	}
