@@ -349,12 +349,13 @@ int lengthOfLongestSubstring(String s) {
 
 // ----------------------------------------------------------------
 
-// Kth Largest Element in an Array (good problem!)
+// Kth Largest Element in an Array
 // Find the kth largest element in an unsorted array. Note that it 
 // is the kth largest element in the sorted order, not the kth 
 // distinct element.
+// LOOK OVER
 
-// Solution:
+// Solution 1:
 // Average case time is O(n), worst case time is O(n^2).
 int findKthLargest(int[] nums, int k) {
 	if (k < 1 || nums == null) {
@@ -386,6 +387,8 @@ int getKth(int k, int[] nums, int start, int end) {
         swap(nums, left, right);
     }
     
+    // At this point, left == right
+
     swap(nums, left, end);
     
     if (k == left + 1) {
@@ -395,6 +398,53 @@ int getKth(int k, int[] nums, int start, int end) {
     } else {
         return getKth(k, nums, left + 1, end);
     }
+}
+
+// Solution 2 (my version):
+int findKthLargest(int[] nums, int kOneBased) {
+    if (kOneBased < 1 || nums == null) {
+        return 0;
+    }
+    
+	int left = 0;
+	int right = nums.length - 1;
+	int k = kOneBased - 1;
+	
+	while (true) {
+		int partitionIndex = partition(nums, left, right);
+		if (k == partitionIndex)  {
+			return nums[partitionIndex];
+		} else if (k < partitionIndex) {
+			right = partitionIndex - 1;
+		} else {
+			left = partitionIndex + 1;
+		}
+	}
+}
+
+// Given an array and the current pivot index,
+// put all elements > pivot to the left
+// put all elements < pivot to the right
+// put pivot in the right place
+// return the pivot's correct index
+int partition(int[] nums, int left, int right) {
+	int pivot = nums[left];
+	int i = left;
+	int j = right;
+
+	while (i <= j && i < nums.length && j >= 0) {
+		while (i <= j && i < nums.length && nums[i] >= pivot) i++;
+		while (i <= j && j > 0 && nums[j] <= pivot) j--;
+		
+		if (i <= j) {
+		    swap(nums, i, j);
+		}
+	}
+	
+	// i == j now
+	swap(nums, left, j);
+	
+	return j; // return the pivot's index
 }
 
 void swap(int[] nums, int i1, int i2) {
