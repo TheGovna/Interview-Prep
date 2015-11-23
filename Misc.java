@@ -111,7 +111,6 @@ public class Trie {
     HashMap<Character, Trie> map;
 
     public Trie() {
-        // root = new TrieNode();
         this.map = new HashMap<Character, Trie>();
     }
 

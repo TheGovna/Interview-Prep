@@ -9,31 +9,9 @@ Marge Two Sorted Lists
 // 2.2: Return Kth to Last
 // Implement an algorithm to find the kth to last element of a singly linked list.
 
-// Attempt 1:
-Node getKthToLastNode(Node head, int k) {
-	Node currentNode = head;
-	Node kthNode = head;
-
-	while (kthNode.next != null) {
-		for (int i = 0; i < k; i++) {
-			kthNode = kthNode.next;
-		}
-
-		if (kthNode.next == null) {
-			return currentNode;
-		}
-
-		currentNode = currentNode.next;
-		kthNode = currentNode;
-	}
-
-	return null;
-}
-
-// Solution:
-Node getKthToLastNode(Node head, int k) {
-	Node currentNode = head;
-	Node kthNode = head;
+ListNode getKthToLastNode(ListNode head, int k) {
+	ListNode currentNode = head;
+	ListNode kthNode = head;
 
 	for (int i = 0; i < k; i++) {
 		if (kthNode == null) return null; // Out of bounds
@@ -55,9 +33,9 @@ Node getKthToLastNode(Node head, int k) {
 // Source: https://leetcode.com/problems/linked-list-cycle/
 
 // Solution:
-boolean hasCycle(Node head) {
-	Node slow = head;
-	Node fast = head;
+boolean hasCycle(ListNode head) {
+	ListNode slow = head;
+	ListNode fast = head;
 
 	while (fast != null && fast.next != null) {
 		slow = slow.next;

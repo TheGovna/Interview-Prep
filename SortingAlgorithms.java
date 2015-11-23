@@ -32,6 +32,8 @@ void quickSort(int[] a, int low, int high) {
 		}
 	}
 
+	// At this point, i > j
+
 	// Recursively sort two sub parts
 	if (low < j) {
 		quickSort(a, low, j);
